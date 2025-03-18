@@ -1,9 +1,10 @@
 name: Deploy Monitoring Stack
 
 on:
-  push:
-    branches:
-      - main
+    workflow_run:
+      workflows: ["Deploy AKS"]
+      types:
+        - completed
 
 jobs:
   deploy:
