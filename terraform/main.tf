@@ -39,3 +39,11 @@ resource "azurerm_kubernetes_cluster" "default" {
   }
 
 }
+
+resource "azurerm_container_registry" "acr" {
+  name                = "miacrterraform"
+  resource_group_name = azurerm_resource_group.myRg.name
+  location            = azurerm_resource_group.myRg.location
+  sku                 = "Basic" # Opciones: Basic, Standard, Premium
+  admin_enabled       = true    # Activa el usuario administrador (opcional)
+}
