@@ -1,0 +1,33 @@
+
+name: Build and Push Docker Image to ACR
+
+on:
+  workflow_run:
+    workflows: ["Deploy AKS"]
+    types:
+      - completed
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+  
+      - name: Log in to Azure Container Registry
+        run: |
+          az acr login --name miacrterraform
+
+      - name: Build Docker image
+        run: |
+          docker build -t miacrterraform.azurecr.io/expensy_backend:latest ./code/expensy_backend
+
+      - name: Push Docker image to ACR
+        run: |
+          docker push miacrterraform.azurecr.io/expensy_backend:latest
