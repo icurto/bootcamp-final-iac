@@ -9,15 +9,12 @@ terraform {
 
 provider "azurerm" {
   features {}
-
   subscription_id = "1ca8d3ea-3b84-49f5-afde-7b4ebe3a62eb"
 }
 
 resource "azurerm_resource_group" "myRg" {
-  name = "ironhack-final-rg"
-
+  name     = "ironhack-final-rg"
   location = "West Europe"
-
 }
 
 resource "azurerm_kubernetes_cluster" "default" {
@@ -38,6 +35,9 @@ resource "azurerm_kubernetes_cluster" "default" {
     type = "SystemAssigned"
   }
 
+  tags = {
+    environment = "production"
+  }
 }
 
 resource "azurerm_container_registry" "acr" {
@@ -45,5 +45,10 @@ resource "azurerm_container_registry" "acr" {
   resource_group_name = azurerm_resource_group.myRg.name
   location            = azurerm_resource_group.myRg.location
   sku                 = "Basic" # Opciones: Basic, Standard, Premium
-  admin_enabled       = true    # Activa el usuario administrador (opcional)
+  admin_enabled       = true    # Activar acceso administrativo
+}
+
+resource "azurerm_kubernetes_cluster_integrated_acr" "acr_aks" {
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.default.id
+  acr_name              = azurerm_container_registry.acr.name
 }
