@@ -19,13 +19,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Set Kubernetes Context
-        uses: azure/k8s-set-context@v3
-        with:
-          method: service-principal
-          cluster-name: ironhack-final-aks
-          resource-group: ironhack-final-rg
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Get AKS Credentials
+        run: az aks get-credentials --resource-group ironhack-final-rg --name ironhack-final-aks --overwrite-existing
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v3
