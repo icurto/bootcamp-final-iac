@@ -24,13 +24,6 @@ jobs:
         with:
           version: "latest"
 
-      - name: Configure Kubeconfig
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        run: |
-          echo "$KUBE_CONFIG_DATA" | base64 --decode > kubeconfig.yaml
-          export KUBECONFIG=kubeconfig.yaml
-
       - name: Add Helm repository
         run: |
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
