@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expensy-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expensy-backend
+  template:
+    metadata:
+      labels:
+        app: expensy-backend
+    spec:
+      containers:
+        - name: expensy-backend
+          image: "miacrterraform.azurecr.io/expensy_backend:latest"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8706
+          env:
+            - name: DATABASE_URI
+              value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@mongodb:27017"
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: expensy-secrets
+                  key: redis-password+
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: expensy-secrets
+                  key: mongo-user
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: expensy-secrets
+                  key: mongo-root-password
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expensy-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expensy-frontend
+  template:
+    metadata:
+      labels:
+        app: expensy-frontend
+    spec:
+      containers:
+        - name: expensy-frontend
+          image: "miacrterraform.azurecr.io/expensy_frontend:latest"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 80
+          env:
+            - name: NEXT_PUBLIC_API_URL
+              value: "http://backend.expensy.local"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          ports:
+            - containerPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: expensy-secrets
+                  key: mongo-user
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: expensy-secrets
+                  key: mongo-root-password

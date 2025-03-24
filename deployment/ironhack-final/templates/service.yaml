@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: expensy-backend
+spec:
+  selector:
+    app: expensy-backend
+  ports:
+    - protocol: TCP
+      port: 8706
+      targetPort: 8706
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: expensy-frontend
+spec:
+  selector:
+    app: expensy-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+spec:
+  ports:
+    - port: 6379
+  selector:
+    app: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: mongodb
