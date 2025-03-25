@@ -23,3 +23,10 @@ spec:
                 name: expensy-backend
                 port:
                   number: 8706
+          - path: /monitoring
+            pathType: Prefix
+            backend:
+              service:
+                name: monitoring-stack-grafana
+                port:
+                  number: 80
