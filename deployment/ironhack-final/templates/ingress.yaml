@@ -4,7 +4,6 @@ metadata:
   name: expensy-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
@@ -17,7 +16,7 @@ spec:
                 name: expensy-frontend
                 port:
                   number: 80
-          - path: /api(/|$)(.*)
+          - path: /api
             pathType: Prefix
             backend:
               service:
