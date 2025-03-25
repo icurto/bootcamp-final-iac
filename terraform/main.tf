@@ -3,7 +3,7 @@ terraform {
     resource_group_name  = "ironhack-final-tfstate-rg"
     storage_account_name = "ironhackfinaltfstatestg"
     container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    key                  = "terraform.tfstate2"
   }
 }
 
@@ -14,7 +14,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "myRg" {
-  name = "ironhack-final-rg"
+  name = "ironhack-final-rg2"
 
   location = "West Europe"
 

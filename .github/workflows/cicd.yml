@@ -82,7 +82,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Get AKS Credentials
-        run: az aks get-credentials --resource-group ironhack-final-rg --name ironhack-final-aks --overwrite-existing
+        run: az aks get-credentials --resource-group ironhack-final-rg2 --name ironhack-final-aks --overwrite-existing
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v3
@@ -123,7 +123,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
   
       - name: Get AKS Credentials
-        run: az aks get-credentials --resource-group ironhack-final-rg --name ironhack-final-aks --overwrite-existing
+        run: az aks get-credentials --resource-group ironhack-final-rg2 --name ironhack-final-aks --overwrite-existing
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v3
