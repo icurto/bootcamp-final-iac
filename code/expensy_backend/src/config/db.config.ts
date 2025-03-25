@@ -3,14 +3,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const user = process.env.MONGO_USER;
-const password = process.env.MONGO_PASSWORD;
- 
-const dbUri = `mongodb://${user}:${password}@mongodb-service:27017`;
+
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(dbUri!, {
+    await mongoose.connect(process.env.DATABASE_URI!, {
     });
     console.log('MongoDB connected');
   } catch (error) {
