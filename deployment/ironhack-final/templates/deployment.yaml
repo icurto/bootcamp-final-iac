@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: expensy-backend
-          image: "miacrterraform.azurecr.io/expensy_backend:latest"
+          image: "ivsancheza/expensy_backend:latest"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8706
@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
         - name: expensy-frontend
-          image: "miacrterraform.azurecr.io/expensy_frontend:latest"
+          image: "ivsancheza/expensy_frontend:latest"
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true

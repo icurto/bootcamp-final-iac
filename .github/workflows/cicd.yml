@@ -42,31 +42,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
   
-      - name: Log in to Azure Container Registry
-        run: |
-          az acr login --name miacrterraform
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ivsancheza
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image for backend
         run: |
-          docker build -t miacrterraform.azurecr.io/expensy_backend:latest ./code/expensy_backend
+          docker build -t ivsancheza/expensy_backend:latest ./code/expensy_backend
 
       - name: Push Docker image to ACR for backend
         run: |
-          docker push miacrterraform.azurecr.io/expensy_backend:latest
+          docker push ivsancheza/expensy_backend:latest
     
       - name: Build Docker image for frontend
         run: |
-          docker build -t miacrterraform.azurecr.io/expensy_frontend:latest ./code/expensy_frontend
+          docker build -t ivsancheza/expensy_frontend:latest ./code/expensy_frontend
 
       - name: Push Docker image to ACR for frontend
         run: |
-          docker push miacrterraform.azurecr.io/expensy_frontend:latest
+          docker push ivsancheza/expensy_frontend:latest
   
   helm-deployment:
     needs: build-containers
