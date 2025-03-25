@@ -3,14 +3,13 @@ kind: Ingress
 metadata:
   name: expensy-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: / # Reescribe solo para rutas que lo necesiten
     nginx.ingress.kubernetes.io/use-regex: "true" # Permite usar expresiones regulares en las rutas
 spec:
   ingressClassName: nginx
   rules:
     - http:
         paths:
-          # Frontend
+          # Frontend (reescritura habilitada)
           - path: /?(.*)
             pathType: ImplementationSpecific
             backend:
