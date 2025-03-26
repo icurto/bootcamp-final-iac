@@ -20,7 +20,7 @@ spec:
             - containerPort: 8706
           env:
             - name: DATABASE_URI
-              value: "mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb-service:27017"
+              value: "mongodb://mongoUser:mongoPass@mongodb-service:27017"
             - name: REDIS_HOST
               value: "redis-service"
             - name: REDIS_PORT
