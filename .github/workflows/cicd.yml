@@ -155,5 +155,5 @@ jobs:
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=grafana --timeout=300s
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=prometheus --timeout=300s
 
-      - name: Verify deployment
-        run: kubectl get pods
+      - name: Apply ConfigMap
+        run: kubectl apply -f deployment/ironhack-final/templates/configMap.yaml
