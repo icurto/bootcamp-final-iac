@@ -101,13 +101,18 @@ jobs:
           helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
             --namespace ingress-nginx --create-namespace --wait
       
-      - name: Get Ingress IP
+      - name: Get Ingress External IP
         run: |
-          kubectl get svc -n ingress-nginx ingress-nginx-controller      
+          export EXTERNAL_IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          echo "EXTERNAL_IP=$EXTERNAL_IP" >> $GITHUB_ENV
 
       - name: Deploy Application
         run: |
           helm upgrade --install ironhack-final ./deployment/ironhack-final --wait
+
+      - name: Update frontend with API URL
+        run: |
+          kubectl set env deployment/expensy-frontend NEXT_PUBLIC_API_URL=http://$EXTERNAL_IP
 
   set-up-monitoring:
     needs: helm-deployment
@@ -143,13 +148,12 @@ jobs:
       - name: Deploy Prometheus & Grafana
         run: |
           helm upgrade --install monitoring-stack prometheus-community/kube-prometheus-stack \
-            --namespace monitoring --create-namespace \
             --set grafana.adminPassword=${{ secrets.GRAFANA_PASSWORD }}
 
       - name: Wait for pods to be ready
         run: |
-          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=grafana -n monitoring --timeout=300s
-          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=prometheus -n monitoring --timeout=300s
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=grafana --timeout=300s
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=prometheus --timeout=300s
 
       - name: Verify deployment
-        run: kubectl get pods -n monitoring
+        run: kubectl get pods
