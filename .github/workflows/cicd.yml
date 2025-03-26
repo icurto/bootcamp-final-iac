@@ -157,3 +157,6 @@ jobs:
 
       - name: Apply ConfigMap
         run: kubectl apply -f deployment/configMap.yaml
+
+      - name: Restart Grafana
+        run: kubectl rollout restart deployment monitoring-stack-grafana

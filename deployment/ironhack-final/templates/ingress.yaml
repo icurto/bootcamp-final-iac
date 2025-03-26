@@ -33,10 +33,3 @@ spec:
                 name: monitoring-stack-grafana
                 port:
                   number: 80
-          - path: /login(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: monitoring-stack-grafana
-                port:
-                  number: 80

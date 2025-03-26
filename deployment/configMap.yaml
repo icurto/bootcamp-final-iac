@@ -10,8 +10,9 @@ data:
     root_url = "%(protocol)s://%(domain)s/monitoring"
     serve_from_sub_path = true
 
-    # Aquí puedes agregar más configuraciones si es necesario.
-    # Asegúrate de incluir todas las configuraciones personalizadas que Grafana pueda necesitar.
+    [security]
+    admin_username = admin
+    admin_password = admin
 
   # Si necesitas otros archivos como dashboards o datasources, puedes agregarlos aquí también
   # dashboards.yaml: |
