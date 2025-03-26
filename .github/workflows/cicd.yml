@@ -156,4 +156,4 @@ jobs:
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=prometheus --timeout=300s
 
       - name: Apply ConfigMap
-        run: kubectl apply -f deployment/ironhack-final/templates/configMap.yaml
+        run: kubectl apply -f deployment/configMap.yaml
