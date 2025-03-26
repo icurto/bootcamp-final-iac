@@ -54,7 +54,7 @@ jobs:
 
       - name: Build Docker image for backend
         run: |
-          docker build -t ivsancheza/expensy_backend:latest ./code/expensy_backend
+          docker build -t ivsancheza/expensy_backend:latest ./code/expensy_backend --no-cache
 
       - name: Push Docker image to ACR for backend
         run: |
@@ -62,7 +62,7 @@ jobs:
     
       - name: Build Docker image for frontend
         run: |
-          docker build -t ivsancheza/expensy_frontend:latest ./code/expensy_frontend
+          docker build -t ivsancheza/expensy_frontend:latest ./code/expensy_frontend --no-cache
 
       - name: Push Docker image to ACR for frontend
         run: |
@@ -100,14 +100,14 @@ jobs:
           helm repo update
           helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
             --namespace ingress-nginx --create-namespace --wait
+      
+      - name: Get Ingress IP
+        run: |
+          kubectl get svc -n ingress-nginx ingress-nginx-controller      
 
       - name: Deploy Application
         run: |
           helm upgrade --install ironhack-final ./deployment/ironhack-final --wait
-
-      - name: Get Ingress IP
-        run: |
-          kubectl get svc -n ingress-nginx ingress-nginx-controller
 
   set-up-monitoring:
     needs: helm-deployment
